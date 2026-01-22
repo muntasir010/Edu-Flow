@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../user/user.model";
 import ApiError from "../../utils/ApiError";
+import { createToken } from "../../utils/jwt";
 
 const registerUser = async (payload: any) => {
   const user = new User(payload);
@@ -10,7 +11,7 @@ const registerUser = async (payload: any) => {
 };
 
 const loginUser = async (email: string, password: string) => {
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("+password");
   if (!user) throw new ApiError(404, "User not found");
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -20,11 +21,7 @@ const loginUser = async (email: string, password: string) => {
     throw new ApiError(500, "JWT secret not configured");
   }
 
-  const token = jwt.sign(
-    { id: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" }
-  );
+  const token = createToken({ id: user._id, role: user.role }, "7d");
 
   return { user, token };
 };
