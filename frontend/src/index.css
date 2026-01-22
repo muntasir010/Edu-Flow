@@ -1,3 +1,22 @@
 @import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 @import "tailwindcss";
+
+/* Light */
+:root {
+  --background: 255 255 255;
+  --foreground: 15 23 42;
+  --muted: 241 245 249;
+}
+
+/* Dark */
+.dark {
+  --background: 15 23 42;
+  --foreground: 248 250 252;
+  --muted: 30 41 59;
+}
+
+body {
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+}
