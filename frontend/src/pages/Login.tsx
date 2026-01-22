@@ -22,7 +22,7 @@ const Login = () => {
         setCredentials({
           user: res.data.user,
           token: res.data.token,
-        })
+        }),
       );
 
       toast.success("Login successful");
@@ -32,39 +32,54 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-xl w-96 shadow"
-      >
-        <h2 className="text-2xl font-semibold mb-4 text-center">Login</h2>
+ 
+  <div className="w-full max-w-md mx-auto relative z-10">
+    <div className="bg-[#1e293b] backdrop-blur-xl border border-slate-700 p-10 rounded-3xl shadow-2xl">
+      <div className="text-center mb-10">
+        <h2 className="text-4xl font-extrabold text-white tracking-tight">Login</h2>
+        <p className="text-slate-400 mt-3 font-medium">Access your learning dashboard</p>
+      </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 border rounded mb-3"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block text-sm font-semibold text-slate-300 mb-2 ml-1">Email Address</label>
+          <input
+            type="email"
+            placeholder="user@email.com"
+            className="w-full bg-[#0f172a]/50 border border-slate-600 p-3.5 rounded-xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 border rounded mb-4"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div>
+          <label className="block text-sm font-semibold text-slate-300 mb-2 ml-1">Password</label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            className="w-full bg-[#0f172a]/50 border border-slate-600 p-3.5 rounded-xl text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
         <button
           type="submit"
-          className="w-full bg-black text-white py-2 rounded"
+          className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-500/30 transition-all duration-300 transform active:scale-95 mt-4"
         >
-          Login
+          Sign In
         </button>
       </form>
+
+      <div className="mt-8 text-center">
+        <p className="text-slate-400">
+          New student? <a href="/register" className="text-indigo-400 font-bold hover:text-indigo-300 transition-colors">Create Account</a>
+        </p>
+      </div>
     </div>
+  </div>
   );
 };
 
