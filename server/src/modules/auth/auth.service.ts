@@ -16,11 +16,7 @@ const loginUser = async (email: string, password: string) => {
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) throw new ApiError(401, "Invalid credentials");
-
-  if (!process.env.JWT_SECRET) {
-    throw new ApiError(500, "JWT secret not configured");
-  }
-
+  
   const token = createToken({ id: user._id, role: user.role }, "7d");
 
   return { user, token };
