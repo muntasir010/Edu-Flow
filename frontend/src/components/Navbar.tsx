@@ -60,7 +60,7 @@ const Navbar = () => {
         <div className="flex items-center gap-3">
           <ThemeToggle />
           
-          <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1 hidden md:block"></div>
+          <div className="h-6 w-px bg-slate-200 dark:bg-slate-800 mx-1 hidden md:block"></div>
 
           {/* Profile & Auth Section */}
           <div className="relative" ref={profileRef}>
@@ -84,7 +84,7 @@ const Navbar = () => {
 
                 {/* Dropdown Menu */}
                 {profileOpen && (
-                  <div className="absolute right-0 mt-12 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-2 animate-in fade-in zoom-in duration-200">
+                  <div className="absolute right-0 mt-72 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-2 animate-in fade-in zoom-in duration-200">
                     <div className="px-4 py-3 border-b border-slate-50 dark:border-slate-800 mb-2">
                       <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">Signed in as</p>
                       <p className="text-sm font-bold text-slate-700 dark:text-slate-200 truncate">{user.role}</p>
@@ -108,7 +108,7 @@ const Navbar = () => {
                       <UserIcon size={18} className="text-emerald-500" /> Profile
                     </Link>
 
-                    <div className="h-[1px] bg-slate-50 dark:bg-slate-800 my-2"></div>
+                    <div className="h-px bg-slate-50 dark:bg-slate-800 my-2"></div>
 
                     <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">
                       <LogOut size={18} /> Logout
