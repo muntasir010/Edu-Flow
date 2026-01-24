@@ -1,17 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { IUser } from "./auth.types";
 
 interface AuthState {
   user: any;
   token: string | null;
   loading: boolean;
+  error: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
   token: null,
-  loading: true
+  error: null,
+  loading: true,
 };
+
+export const fetchMe = createAsyncThunk<IUser, void, { rejectValue: string }>(
+  "auth/fetchMe",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await fetch("http://localhost:5000/api/users/me", {
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return rejectWithValue(data.message || "Unauthorized");
+      }
+
+      return data.data;
+    } catch {
+      return rejectWithValue("Network error");
+    }
+  },
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -23,7 +47,7 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.user = null;
-      state.token = null;
+      state.error = null;
     },
     setUser: (state, action) => {
       state.user = action.payload;
@@ -33,6 +57,23 @@ const authSlice = createSlice({
       state.user = null;
       state.loading = false;
     },
+  },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchMe.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchMe.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(fetchMe.rejected, (state, action) => {
+        state.loading = false;
+        state.user = null;
+        state.error = action.payload || "Unauthorized";
+      });
   },
 });
 

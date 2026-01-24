@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Menu,
   X,
@@ -10,15 +10,22 @@ import {
 } from "lucide-react";
 import { Logo } from "./Logo";
 import ThemeToggle from "./ThemeToggle";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppSelector } from "@/redux/hook";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/features/auth/authSlice";
+// import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const location = useLocation();
   const profileRef = useRef<HTMLDivElement>(null);
-  const { user, isAuthenticated } = useAuth();
- 
+  // const { user, isAuthenticated } = useAuth();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, loading } = useAppSelector((state) => state.auth);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -43,6 +50,13 @@ const Navbar = () => {
     location.pathname === path
       ? "text-indigo-600 dark:text-indigo-400 font-bold"
       : "text-slate-600 dark:text-slate-300 hover:text-indigo-500 transition-colors";
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
+  if (loading) return null;
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
@@ -73,7 +87,7 @@ const Navbar = () => {
 
           {/* Profile & Auth Section */}
           <div className="relative" ref={profileRef}>
-            {!isAuthenticated ? (
+            {!user ? (
               <Link
                 to="/login"
                 className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-500/20"
@@ -133,7 +147,10 @@ const Navbar = () => {
 
                     <div className="h-px bg-slate-50 dark:bg-slate-800 my-2"></div>
 
-                    <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 font-semibold hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
+                    >
                       <LogOut size={18} /> Logout
                     </button>
                   </div>
