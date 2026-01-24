@@ -4,10 +4,14 @@ import PrivateRoute from "@/components/PrivateRoute";
 import AdminLayout from "@/Layouts/AdminLayout";
 import PublicLayout from "@/Layouts/PublicLayouts";
 import UserLayout from "@/Layouts/UserLayout";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import ManageCourses from "@/pages/admin/ManageCourses";
+import ManageUsers from "@/pages/admin/ManageUser";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import UserDashboard from "@/pages/user/UserDashboard";
 import { createBrowserRouter } from "react-router-dom";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -40,9 +44,9 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      //  admin routes
-      { path: "dashboard", element: <div>Admin Dashboard</div> },
-      { path: "manage-users", element: <div>Manage Users</div> },
+      { path: "dashboard", element: <AdminDashboard /> },
+      { path: "users", element: <ManageUsers /> },
+      { path: "courses", element: <ManageCourses /> },
     ],
   },
 ]);
