@@ -1,9 +1,10 @@
+import Navbar from "@/components/Navbar";
 import { Outlet } from "react-router-dom";
 
 const UserLayout = () => {
   return (
     <div>
-      <header className=" text-white p-4">User Navbar</header>
+      <Navbar />
       <main className="p-4">
         <Outlet />
       </main>
