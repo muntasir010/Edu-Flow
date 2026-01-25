@@ -7,7 +7,14 @@
 ## 🚀 Live Demo
 - **Frontend:** [https://eduflow-iota.vercel.app]
 - **Backend API:** [https://eduflow-eta.vercel.app]
+## Credential: 
+    Admin: 
+    email: admin@mail.com 
+    Password: 12345678
 
+    User: 
+    email: naeem1@mail.com
+    password: 12345678
 ---
 
 ## ✨ Features
