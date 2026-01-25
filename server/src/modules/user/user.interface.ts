@@ -6,4 +6,5 @@ export interface IUser extends Document {
   password: string;
   role: "USER" | "ADMIN";
   profilePhoto: string;
+  isBlocked: boolean;
 }

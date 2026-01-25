@@ -13,6 +13,10 @@ const userSchema = new Schema<IUser>(
       default: "USER",
     },
     profilePhoto: { type: String },
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
