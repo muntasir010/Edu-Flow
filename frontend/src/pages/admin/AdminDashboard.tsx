@@ -1,43 +1,65 @@
-import { Users, BookOpen, DollarSign } from "lucide-react";
-import StatCard from "@/components/dashboard/StatCard";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from "react";
+import { useGetAllUsersQuery } from "@/redux/features/admin/adminApi";
+import { useAppDispatch } from "@/redux/hook";
+import { setAdminStats } from "@/redux/features/admin/adminSlice";
 
 const AdminDashboard = () => {
-  return (
-    <div className="space-y-8">
-      <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+  const { data } = useGetAllUsersQuery(undefined);
+  const dispatch = useAppDispatch();
 
-      {/* STATS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <StatCard title="Total Users" value="120" icon={<Users />} />
-        <StatCard title="Total Courses" value="18" icon={<BookOpen />} />
-        <StatCard title="Revenue" value="$3,500" icon={<DollarSign />} />
+  useEffect(() => {
+    if (data?.data) {
+      const totalUsers = data.data.length;
+      const totalAdmins = data.data.filter(
+        (u: any) => u.role === "ADMIN"
+      ).length;
+      const totalBlockedUsers = data.data.filter(
+        (u: any) => u.isBlocked
+      ).length;
+
+      dispatch(
+        setAdminStats({
+          totalUsers,
+          totalAdmins,
+          totalBlockedUsers,
+        })
+      );
+    }
+  }, [data, dispatch]);
+
+  return (
+    <div className="p-6 text-black">
+      <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+
+      {/* Overview Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="p-5 rounded-xl bg-white dark:bg-slate-900 shadow">
+          <p className="text-sm text-muted-foreground">Total Users</p>
+          <h2 className="text-3xl font-bold">{data?.data.length}</h2>
+        </div>
+
+        <div className="p-5 rounded-xl bg-white dark:bg-slate-900 shadow">
+          <p className="text-sm text-muted-foreground">Admins</p>
+          <h2 className="text-3xl font-bold">
+            {data?.data.filter((u: any) => u.role === "ADMIN").length}
+          </h2>
+        </div>
+
+        <div className="p-5 rounded-xl bg-white dark:bg-slate-900 shadow">
+          <p className="text-sm text-muted-foreground">Blocked Users</p>
+          <h2 className="text-3xl font-bold">
+            {data?.data.filter((u: any) => u.isBlocked).length}
+          </h2>
+        </div>
       </div>
 
-      {/* RECENT USERS */}
-      <div className="bg-white dark:bg-slate-900 border rounded-xl p-6">
-        <h2 className="font-semibold mb-4">Recent Users</h2>
-
-        <table className="w-full text-sm">
-          <thead className="border-b text-left text-slate-500">
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-b">
-              <td className="py-2">Asif</td>
-              <td>asif@email.com</td>
-              <td className="text-indigo-600">ADMIN</td>
-            </tr>
-            <tr>
-              <td className="py-2">User One</td>
-              <td>user@email.com</td>
-              <td>USER</td>
-            </tr>
-          </tbody>
-        </table>
+      {/* Chart Placeholder */}
+      <div className="mt-10 p-6 bg-white dark:bg-slate-900 rounded-xl shadow">
+        <p className="text-lg font-semibold mb-2">User Statistics</p>
+        <p className="text-sm text-muted-foreground">
+          Chart integration (Bar / Pie) will be added in next step.
+        </p>
       </div>
     </div>
   );
