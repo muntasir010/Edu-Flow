@@ -101,7 +101,7 @@ const Navbar = () => {
                   className="flex items-center gap-2 cursor-pointer p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
                 >
                   <img
-                    src="https://i.pravatar.cc/100"
+                    src={user?.profilePhoto}
                     alt="profile"
                     className="w-9 h-9 rounded-full border-2 border-indigo-500/20 object-cover"
                   />

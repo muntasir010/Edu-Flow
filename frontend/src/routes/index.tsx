@@ -24,7 +24,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/user",
-    element: <UserLayout />,
+    element: (
+      <PrivateRoute role="USER">
+        <UserLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "dashboard",
@@ -47,6 +51,10 @@ export const router = createBrowserRouter([
       { path: "dashboard", element: <AdminDashboard /> },
       { path: "users", element: <ManageUsers /> },
       { path: "courses", element: <ManageCourses /> },
+      {
+        path: "profile",
+        element: <UserProfile />,
+      },
     ],
   },
 ]);

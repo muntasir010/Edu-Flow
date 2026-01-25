@@ -20,7 +20,7 @@ export const fetchMe = createAsyncThunk<IUser, void, { rejectValue: string }>(
   "auth/fetchMe",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:5000/api/users/me", {
+      const res = await fetch("http://localhost:5000/api/v1/users/me", {
         credentials: "include",
       });
 

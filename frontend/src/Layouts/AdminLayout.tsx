@@ -1,45 +1,30 @@
+import { useState } from "react";
+import { Sidebar } from "@/components/dashboard/Sidebar";
 import Navbar from "@/components/Navbar";
-import { Outlet, NavLink } from "react-router-dom";
+import { useAppSelector } from "@/redux/hook";
+import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
+  const { user, loading } = useAppSelector((state) => state.auth);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
-      <Navbar />
+    <div className="flex min-h-screen bg-slate-100 dark:bg-slate-950">
+      <Sidebar
+        role={user?.role}
+        isLoading={loading}
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-12 gap-6">
-        {/* SIDEBAR */}
-        <aside className="col-span-12 md:col-span-3 bg-white dark:bg-slate-900 rounded-xl border p-4 h-fit">
-          <nav className="space-y-2 text-sm">
-            <NavLink
-              to="/admin/dashboard"
-              className={({ isActive }) =>
-                isActive
-                  ? "block px-3 py-2 rounded bg-indigo-600 text-white"
-                  : "block px-3 py-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
-              }
-            >
-              Dashboard
-            </NavLink>
-
-            <NavLink
-              to="/admin/users"
-              className="block px-3 py-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
-            >
-              Manage Users
-            </NavLink>
-
-            <NavLink
-              to="/admin/courses"
-              className="block px-3 py-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
-            >
-              Manage Courses
-            </NavLink>
-          </nav>
-        </aside>
-
-        {/* CONTENT */}
-        <main className="col-span-12 md:col-span-9">
-          <Outlet />
+      <div
+        className={`flex-1 flex flex-col transition-all duration-300 ${isCollapsed ? "md:ml-20" : "md:ml-64"} ml-0`}
+      >
+        <Navbar />
+        <main className="p-4 md:p-8">
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
