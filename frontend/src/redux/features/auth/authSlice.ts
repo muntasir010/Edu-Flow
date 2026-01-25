@@ -20,21 +20,32 @@ export const fetchMe = createAsyncThunk<IUser, void, { rejectValue: string }>(
   "auth/fetchMe",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await fetch("http://localhost:5000/api/v1/users/me", {
+      const rawBaseUrl = (import.meta as any).env.VITE_BASE_URL || "http://localhost:5000/api/v1/users/me";
+      
+      const baseUrl = rawBaseUrl.endsWith("/") ? rawBaseUrl.slice(0, -1) : rawBaseUrl;
+      const fullUrl = `${baseUrl}/users/me`;
+
+      const res = await fetch(fullUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
         credentials: "include",
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        return rejectWithValue(data.message || "Unauthorized");
+        return rejectWithValue(data.message || "Unauthorized access");
       }
 
-      return data.data;
-    } catch {
-      return rejectWithValue("Network error");
+      return data.data || data; 
+      
+    } catch (err: any) {
+      console.error("FetchMe Error:", err);
+      return rejectWithValue("Network error. Please check your connection.");
     }
-  },
+  }
 );
 
 const authSlice = createSlice({

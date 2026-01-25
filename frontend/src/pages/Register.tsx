@@ -2,9 +2,11 @@
 import { useState } from "react";
 import { useRegisterMutation } from "../redux/api/authApi";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [register] = useRegisterMutation();
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     name: "",
@@ -22,6 +24,7 @@ const Register = () => {
     try {
       await register(formData).unwrap();
       toast.success("Registration successful");
+      navigate("/login")
     } catch (err: any) {
       toast.error(err?.data?.message || "Registration failed");
     }
