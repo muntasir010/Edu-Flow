@@ -22,7 +22,7 @@ const UserLayout = () => {
         className={`flex-1 flex flex-col transition-all duration-300 ${isCollapsed ? "md:ml-20" : "md:ml-64"} ml-0`}
       >
         <Navbar />
-        <main className="p-4 md:p-8">
+        <main className="p-6 md:p-12">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>
