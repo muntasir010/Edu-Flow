@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   Menu,
   X,
@@ -12,18 +12,17 @@ import { Logo } from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 import { useAppSelector } from "@/redux/hook";
 import { useDispatch } from "react-redux";
-import { logout } from "@/redux/features/auth/authSlice";
-// import { useAuth } from "@/hooks/useAuth";
+import { clearUser } from "@/redux/features/auth/authSlice";
+import { useLogoutMutation } from "@/redux/api/authApi";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const location = useLocation();
   const profileRef = useRef<HTMLDivElement>(null);
-  // const { user, isAuthenticated } = useAuth();
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [logout] = useLogoutMutation();
   const { user, loading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
@@ -51,9 +50,9 @@ const Navbar = () => {
       ? "text-indigo-600 dark:text-indigo-400 font-bold"
       : "text-slate-600 dark:text-slate-300 hover:text-indigo-500 transition-colors";
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login");
+  const handleLogout = async () => {
+    await logout().unwrap();
+    dispatch(clearUser());
   };
 
   if (loading) return null;

@@ -38,7 +38,22 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
+const logout = catchAsync(async(req, res) => {
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+});
+
+
 export const AuthController = {
   register,
   login,
+  logout
 };
