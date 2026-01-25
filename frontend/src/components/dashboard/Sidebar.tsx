@@ -46,6 +46,11 @@ export const Sidebar = ({
             icon: <Users size={20} />,
           },
           {
+            name: "Users",
+            path: "/admin/user",
+            icon: <Users size={20} />,
+          },
+          {
             name: "Manage Courses",
             path: "/admin/courses",
             icon: <BookOpen size={20} />,
